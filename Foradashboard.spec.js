@@ -46,24 +46,76 @@ test('Dashboard', async ({ browser }) => {
     //hotel
     await page.click('text = The Roxy Hotel New York');
     //hotel rate card from the list
-    await page.click('text = Roxy Kings Feature 1 King Bed. Wood Floors.');
+    await page.click('text = Deluxe Kings Feature 1 King Bed. Wood Floors.');
     //scroll to book
     await page.click('#scrollToBook');
     //continue
     await page.click('text = Continue');
     //client name
    // Wait for the main container
-   await page.waitForSelector('//*[@id="main-container"]');
-   await page.locator('//*[@id="main-container"]').click();
-   // Find the dropdown inside the main container
-   const dropdown = await page.locator('//*[@id="headlessui-popover-panel-:r7g:"]'); 
-   await page.click('text = Parkavi S');
-   // Ensure dropdown is visible before selecting
-await dropdown.waitFor({ state: 'visible' });
+   await page.locator('//*[@id="main-container"]/div/div[2]/div[1]/div[1]/div/div/div[3]/div[1]/input').click();
+   await page.locator('//*[@id="main-container"]/div/div[2]/div[1]/div[1]/div/div/div[3]/div[1]/input').fill('Parkavi S');
+   await page.waitForTimeout(2000);
+    //await page.locator('//*[@id="headlessui-popover-panel-:r82:"]/div/div[2]/button').click();
+ await page.locator('input[placeholder="Select a client"]').click();    
+ await page.waitForTimeout(2000);
 
-await dropdown.selectOption({ label: 'Parkavi S' });
-    await page.waitForTimeout(2000);
+ await page.locator('label:nth-child(2)').click();
+ await page.waitForTimeout(2000);
     await page.pause();
+    //add card
+    await page.locator('//*[@id="main-container"]/div/div[2]/div[1]/div[1]/div/div[2]/div[1]/div[2]/button/span').click();
+    await page.waitForTimeout(3000);
+// Fill in the Cardholder Name
+await page.fill('input[name="cardHolder"]', 'Parkavi');
+
+// Fill in the Card Number (Adjust selector based on the actual form field)
+//await page.fill('input[name="cardNumber"]', '4111 1111 1111 1111'); // Example Visa card
+
+// Fill Expiry Date (MM/YY format)
+await page.fill('input[name="expiringDate"]', '12/26');
+await page.waitForTimeout(2000);
+//cvc
+//await page.fill('//*[@id="data"]', '324');
+
+//address
+await page.locator("//input[@id='address']").fill('United States of America');
+//apt number
+await page.locator("//input[@id='address_additional']").fill('234');
+await page.waitForTimeout(2000);
+
+//City
+await page.locator("//input[@id='city']").fill('Newyork');
+//State
+await page.locator("//input[@id='state']").fill('US');
+//zipcode
+await page.locator("//input[@id='postal_code']").fill('600001');
+await page.waitForTimeout(2000);
+
+//button save
+await page.locator('#btnSubmit').click();
+//Payment card
+await page.locator('//*[@id="main-container"]/div/div[2]/div[1]/div[1]/div/div[2]/div[2]/div[1]/div/div/label/input').click();
+await page.pause();
+
+//trip
+await page.locator('//*[@id="main-container"]/div/div[2]/div[1]/div[1]/div/div[3]/div[2]/div[2]/label/input').click();
+await page.pause();
+
+//complete booking
+await page.locator('//*[@id="main-container"]/div/div[2]/div[2]/div[4]/button').click();
+await page.waitForTimeout(5000);
+//view booking
+await page.locator('//*[@id="main-container"]/div/div/div/div/div/div[12]/div').click();
+await page.waitForTimeout(5000);
+
+//clients tab
+await page.goto('https://advisor.forastaging.net/clients');
+await page.pause();
+//search by names
+await page.fill('//*[@id="main-container"]/div/div[3]/div/div[1]/div[1]/div/label/input', 'Parkavi S');
+//booked name
+await page.locator('//*[@id="main-container"]/div/div[3]/div/div[1]/div[4]/a').click();
 
 
 });
